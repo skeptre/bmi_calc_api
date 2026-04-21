@@ -13,7 +13,6 @@ def read_root():
 @app.post("/bmi/calculate", response_model=BMICalculateResponse)
 def calculate_bmi_route(data: BMICalculateRequest):
     try:
-        result = calculate_bmi(data)
-        return result
+        return calculate_bmi(data)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
