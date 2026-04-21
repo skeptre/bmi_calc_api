@@ -1,6 +1,5 @@
-from fastapi import FastAPI, HTTPException
-from app.schemas.bmi import BMICalculateRequest, BMICalculateResponse
-from app.services.bmi_service import calculate_bmi
+from fastapi import FastAPI
+from app.api.routes.bmi import router as bmi_router
 
 app = FastAPI()
 
@@ -10,9 +9,4 @@ def read_root():
     return {"message": "BMI API is running!"}
 
 
-@app.post("/bmi/calculate", response_model=BMICalculateResponse)
-def calculate_bmi_route(data: BMICalculateRequest):
-    try:
-        return calculate_bmi(data)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+app.include_router(bmi_router))
