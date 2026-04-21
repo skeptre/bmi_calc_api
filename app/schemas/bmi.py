@@ -1,16 +1,20 @@
 from pydantic import BaseModel, Field
-from typing import Literal, Optional
+from typing import Literal, Union
 
-class BMICalculateRequest(BaseModel):
-    unit_system: Literal["metric", "imperial"]
-    
-    height_cm: Optional[float] = Field(default=None, gt= 0, description="Height in centimeters (required if unit_system is 'metric')")
-    weight_kg: Optional[float] = Field(default=None, gt= 0, description="Weight in kilograms (required if unit_system is 'metric')")    
 
-    height_ft: Optional[float] = Field(default=None, gt= 0, description="Height in feet (required if unit_system is 'imperial')")
-    weight_lb: Optional[float] = Field(default=None, gt= 0, description="Weight in pounds (required if unit_system is 'imperial')")
-    height_in: Optional[float] = Field(default=None, gt= 0, description="Height in inches (required if unit_system is 'imperial')")
+class MetricBMICalculateRequest(BaseModel):
+    unit_system: Literal["metric"]
+    height_cm: float = Field(gt=0, description="Height in centimeters")
+    weight_kg: float = Field(gt=0, description="Weight in kilograms")
+
+class ImperialBMICalculateRequest(BaseModel):
+    unit_system: Literal["imperial"]
+    height_ft: float = Field(gt=0, description="Height in feet")
+    weight_lb: float = Field(gt=0, description="Weight in pounds")
+    height_in: float = Field(gt=0, description="Height in inches")
 
 class BMICalculateResponse(BaseModel):
     bmi: float
     classification: str
+
+BMICalculateRequest = Union[MetricBMICalculateRequest, ImperialBMICalculateRequest]

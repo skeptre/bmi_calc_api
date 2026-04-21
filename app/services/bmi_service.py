@@ -1,5 +1,7 @@
-from app.schemas.bmi import BMICalculateRequest, BMICalculateResponse
-
+from app.schemas.bmi import (
+    BMICalculateRequest,
+    BMICalculateResponse,
+)
 
 def classify_bmi(bmi: float) -> str:
     if bmi < 18.5:
@@ -11,25 +13,31 @@ def classify_bmi(bmi: float) -> str:
     return "Obese"
 
 
+def calculate_metric_bmi(height_cm: float, weight_kg: float) -> float:
+    height_m = height_cm / 100
+    if height_m <= 0:
+        raise ValueError("Height must be greater than zero")
+    return weight_kg / (height_m ** 2)
+
+
+def calculate_imperial_bmi(height_ft: float, height_in: float, weight_lb: float) -> float:
+    total_inches = (height_ft * 12) + height_in
+    if total_inches <= 0:
+        raise ValueError("Height must be greater than zero")
+    return (weight_lb / (total_inches ** 2)) * 703
+
 def calculate_bmi(data: BMICalculateRequest) -> BMICalculateResponse:
     if data.unit_system == "metric":
-        if data.height_cm is None or data.weight_kg is None:
-            raise ValueError("height_cm and weight_kg are required for metric units")
-
-        height_m = data.height_cm / 100
-        bmi = data.weight_kg / (height_m ** 2)
-
+        bmi = calculate_metric_bmi(data.height_cm, data.weight_kg)
+    elif data.unit_system == "imperial":
+        bmi = calculate_imperial_bmi(data.height_ft, data.height_in, data.weight_lb)
     else:
-        if data.height_ft is None or data.height_in is None or data.weight_lb is None:
-            raise ValueError("height_ft, height_in, and weight_lb are required for imperial units")
-
-        total_inches = (data.height_ft * 12) + data.height_in
-        bmi = (data.weight_lb / (total_inches ** 2)) * 703
-
+        raise ValueError("Invalid unit system")
+    
     bmi = round(bmi, 2)
-    classification = classify_bmi(bmi)
+    classsification = classify_bmi(bmi)
 
     return BMICalculateResponse(
         bmi=bmi,
-        classification=classification,
+        classification=classsification
     )
