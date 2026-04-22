@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
 from typing import Literal, Union
+
+from pydantic import BaseModel, Field
 
 
 class MetricBMICalculateRequest(BaseModel):
@@ -12,7 +13,7 @@ class ImperialBMICalculateRequest(BaseModel):
     unit_system: Literal["imperial"]
     height_ft: float = Field(gt=0, description="Height in feet")
     weight_lb: float = Field(gt=0, description="Weight in pounds")
-    height_in: float = Field(gt=0, description="Height in inches")
+    height_in: float = Field(ge=0, description="Height in inches")
 
 
 class BMICalculateResponse(BaseModel):

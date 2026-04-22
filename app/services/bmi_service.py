@@ -37,6 +37,6 @@ def calculate_bmi(data: BMICalculateRequest) -> BMICalculateResponse:
         raise ValueError("Invalid unit system")
 
     bmi = round(bmi, 2)
-    classsification = classify_bmi(bmi)
+    classification = classify_bmi(bmi)
 
-    return BMICalculateResponse(bmi=bmi, classification=classsification)
+    return BMICalculateResponse(bmi=bmi, classification=classification)

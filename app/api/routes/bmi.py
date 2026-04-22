@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+
 from app.schemas.bmi import BMICalculateRequest, BMICalculateResponse
 from app.services.bmi_service import calculate_bmi
 
