@@ -4,6 +4,7 @@ from app.services.bmi_service import calculate_bmi
 
 router = APIRouter(prefix="/bmi", tags=["BMI"])
 
+
 @router.post("/calculate", response_model=BMICalculateResponse)
 def calculate_bmi_route(data: BMICalculateRequest):
     try:
