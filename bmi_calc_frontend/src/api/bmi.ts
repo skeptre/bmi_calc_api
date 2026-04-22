@@ -1,6 +1,6 @@
 import type { BMICalculateRequest, BMICalculateResponse } from "../types/bmi";
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function calculateBMI(payload: BMICalculateRequest): Promise<BMICalculateResponse> {
   const response = await fetch(`${API_BASE_URL}/bmi/calculate`, {
